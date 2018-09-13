@@ -1042,8 +1042,10 @@ _gaussian_blur(ImagingObject* self, PyObject* args)
     if (!imOut)
         return NULL;
 
-    if (!ImagingGaussianBlur(imOut, imIn, radius, passes))
+    if (!ImagingGaussianBlur(imOut, imIn, radius, passes)) {
+        ImagingDelete(imOut);
         return NULL;
+    }
 
     return PyImagingNew(imOut);
 }
@@ -1931,8 +1933,10 @@ _box_blur(ImagingObject* self, PyObject* args)
     if (!imOut)
         return NULL;
 
-    if (!ImagingBoxBlur(imOut, imIn, radius, n))
+    if (!ImagingBoxBlur(imOut, imIn, radius, n)) {
+        ImagingDelete(imOut);
         return NULL;
+    }
 
     return PyImagingNew(imOut);
 }
@@ -2572,6 +2576,7 @@ _draw_arc(ImagingDrawObject* self, PyObject* args)
         return NULL;
     if (n != 2) {
         PyErr_SetString(PyExc_TypeError, must_be_two_coordinates);
+        free(xy);
         return NULL;
     }
 
@@ -2609,6 +2614,7 @@ _draw_bitmap(ImagingDrawObject* self, PyObject* args)
         PyErr_SetString(PyExc_TypeError,
                         "coordinate list must contain exactly 1 coordinate"
                         );
+        free(xy);
         return NULL;
     }
 
@@ -2644,6 +2650,7 @@ _draw_chord(ImagingDrawObject* self, PyObject* args)
         return NULL;
     if (n != 2) {
         PyErr_SetString(PyExc_TypeError, must_be_two_coordinates);
+        free(xy);
         return NULL;
     }
 
@@ -2679,6 +2686,7 @@ _draw_ellipse(ImagingDrawObject* self, PyObject* args)
         return NULL;
     if (n != 2) {
         PyErr_SetString(PyExc_TypeError, must_be_two_coordinates);
+        free(xy);
         return NULL;
     }
 
@@ -2829,6 +2837,7 @@ _draw_pieslice(ImagingDrawObject* self, PyObject* args)
         return NULL;
     if (n != 2) {
         PyErr_SetString(PyExc_TypeError, must_be_two_coordinates);
+        free(xy);
         return NULL;
     }
 
@@ -2867,6 +2876,7 @@ _draw_polygon(ImagingDrawObject* self, PyObject* args)
         PyErr_SetString(PyExc_TypeError,
                         "coordinate list must contain at least 2 coordinates"
                         );
+        free(xy);
         return NULL;
     }
 
@@ -2909,6 +2919,7 @@ _draw_rectangle(ImagingDrawObject* self, PyObject* args)
         return NULL;
     if (n != 2) {
         PyErr_SetString(PyExc_TypeError, must_be_two_coordinates);
+        free(xy);
         return NULL;
     }
 
