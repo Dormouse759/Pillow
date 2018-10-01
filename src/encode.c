@@ -721,8 +721,10 @@ PyImaging_JpegEncoderNew(PyObject* self, PyObject* args)
     if (rawExif && rawExifLen > 0) {
         /* malloc check ok, length is from python parsearg */
         char* pp = malloc(rawExifLen); // Freed in JpegEncode, Case 5
-        if (!pp)
+        if (!pp) {
+            if (extra) free(extra);
             return PyErr_NoMemory();
+        }
         memcpy(pp, rawExif, rawExifLen);
         rawExif = pp;
     } else
